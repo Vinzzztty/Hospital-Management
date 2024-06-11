@@ -16,4 +16,4 @@ def get_port():
 
     # print(port)
 
-    return port
+    return int(port) if port else 8080

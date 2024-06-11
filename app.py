@@ -1,17 +1,21 @@
-from flask import Flask, jsonify, request
-from flask_pymongo import PyMongo
+from flask import Flask, jsonify
 from bson.objectid import ObjectId
 from config import get_port, get_mongodb_uri
-from flask_bcrypt import Bcrypt
+from models import bcrypt, mongo
+from routes.auth import auth_bp
+from routes.staffRuangan import staff_ruangan_bp
 
 app = Flask(__name__)
-bcrypt = Bcrypt(app=app)
+app.config["SECRET_KEY"] = "your_secret_key"
 
+# Initialize database and bcrypt
 app.config["MONGO_URI"] = get_mongodb_uri()
-mongo = PyMongo(app=app)
+mongo.init_app(app)
+bcrypt.init_app(app)
 
-# # Initialize the MongoDB connection
-# init_db(app)
+# Register blueprints
+app.register_blueprint(auth_bp)
+app.register_blueprint(staff_ruangan_bp)
 
 
 @app.route("/")
@@ -32,45 +36,6 @@ def get_users():
             }
         )
     return jsonify(result)
-
-
-@app.route("/auth/register", methods=["POST"])
-def add_user():
-    username = request.json["username"]
-    role = request.json["role"]
-    password = request.json["password"]
-
-    # Hashing password
-    hash_password = bcrypt.generate_password_hash(password=password).decode("utf-8")
-
-    user_id = mongo.db.users.insert_one(
-        {"username": username, "role": role, "password": hash_password}
-    ).inserted_id
-    new_user = mongo.db.users.find_one({"_id": user_id})
-    result = {
-        "_id": str(new_user["_id"]),
-        "username": new_user["username"],
-        "role": new_user["role"],
-        "password": new_user["password"],
-    }
-    return jsonify(result)
-
-
-@app.route("/auth/login", methods=["GET", "POST"])
-def login():
-    username = request.json.get("username")
-    password = request.json.get("password")
-
-    # Handling missing email and password not match
-    if not username or not password:
-        return jsonify({"message": "Missing email or password"}), 400
-
-    user = mongo.db.users.find_one({"username": username})
-
-    if not user or not bcrypt.check_password_hash(user["password"], password):
-        return jsonify({"message": "Invalid email or password"}), 401
-
-    return jsonify({"message": f"Login successful, {user['role']}"})
 
 
 if __name__ == "__main__":
