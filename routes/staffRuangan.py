@@ -26,6 +26,7 @@ def pengajuan_barang():
     tanggal = data.get("tanggal")
     nama_barang = data.get("nama_barang")
     jumlah = data.get("jumlah")
+    ruangan = data.get("ruangan")
 
     if not all([role, tanggal, nama_barang, jumlah]):
         return jsonify({"message": "Missing required fields"}), 400
@@ -41,7 +42,13 @@ def pengajuan_barang():
         )
 
     pengajuan_id = mongo.db.pengajuan_barang.insert_one(
-        {"role": role, "tanggal": tanggal, "nama_barang": nama_barang, "jumlah": jumlah}
+        {
+            "role": role,
+            "tanggal": tanggal,
+            "nama_barang": nama_barang,
+            "jumlah": jumlah,
+            "ruangan": ruangan,
+        }
     ).inserted_id
 
     new_pengajuan = mongo.db.pengajuan_barang.find_one({"_id": pengajuan_id})
@@ -52,6 +59,7 @@ def pengajuan_barang():
         "tanggal": new_pengajuan["tanggal"],
         "nama_barang": new_pengajuan["nama_barang"],
         "jumlah": new_pengajuan["jumlah"],
+        "ruangan": new_pengajuan["ruangan"],
     }
 
     return jsonify(result), 201
@@ -128,6 +136,7 @@ def pengusulan_barang():
     nama_barang = data.get("nama_barang")
     volume = data.get("volume")
     merek = data.get("merek")
+    ruangan = data.get("ruangan")
 
     if not all([role, tanggal, nama_barang, volume, merek]):
         return jsonify({"message": "Missing required fields"}), 400
@@ -139,6 +148,7 @@ def pengusulan_barang():
             "nama_barang": nama_barang,
             "volume": volume,
             "merek": merek,
+            "ruangan": ruangan,
         }
     ).inserted_id
 
@@ -151,6 +161,7 @@ def pengusulan_barang():
         "nama_barang": new_pengusulan["nama_barang"],
         "volume": new_pengusulan["volume"],
         "merek": new_pengusulan["merek"],
+        "ruangan": new_pengusulan["ruangan"],
     }
 
     return jsonify(result), 201
