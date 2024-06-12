@@ -125,7 +125,7 @@ def get_pengusulan_barang():
     for item in pengusulan_items:
         item["_id"] = str(item["_id"])
 
-    return jsonify({"pengajuan_barang": pengusulan_items})
+    return jsonify({"pengusulan_barang": pengusulan_items})
 
 
 @staff_ruangan_bp.route("/pengusulan_barang", methods=["POST"])

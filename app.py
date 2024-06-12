@@ -4,6 +4,7 @@ from config import get_port, get_mongodb_uri
 from models import bcrypt, mongo
 from routes.auth import auth_bp
 from routes.staffRuangan import staff_ruangan_bp
+from routes.sub_bagian import sub_bagian_bp
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "your_secret_key"
@@ -16,6 +17,7 @@ bcrypt.init_app(app)
 # Register blueprints
 app.register_blueprint(auth_bp)
 app.register_blueprint(staff_ruangan_bp)
+app.register_blueprint(sub_bagian_bp)
 
 
 @app.route("/")
