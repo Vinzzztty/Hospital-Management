@@ -83,10 +83,9 @@ def get_verifikasi_by_ruangan(ruangan):
 def add_verifikasi():
     data = request.get_json()
     id_pengusulan_barang = data.get("id_pengusulan_barang")
-    nama_barang = data.get("nama_barang")
     volume = data.get("volume")
 
-    if not id_pengusulan_barang or not nama_barang or not volume:
+    if not id_pengusulan_barang or not volume:
         return (
             jsonify(
                 {
