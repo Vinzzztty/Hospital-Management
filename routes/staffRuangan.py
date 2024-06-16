@@ -23,12 +23,13 @@ def get_pengajuan_barang():
 def pengajuan_barang():
     data = request.get_json()
     role = data.get("role")
-    tanggal = data.get("tanggal")
     nama_barang = data.get("nama_barang")
+    tanggal_pengajuan = data.get("tanggal_pengajuan")
+    tanggal_penerimaan = data.get("tanggal_penerimaan")
     jumlah = data.get("jumlah")
     ruangan = data.get("ruangan")
 
-    if not all([role, tanggal, nama_barang, jumlah]):
+    if not all([role, tanggal_pengajuan, nama_barang, jumlah, ruangan]):
         return jsonify({"message": "Missing required fields"}), 400
 
     if nama_barang not in ALLOWED_BARANG:
@@ -44,7 +45,8 @@ def pengajuan_barang():
     pengajuan_id = mongo.db.pengajuan_barang.insert_one(
         {
             "role": role,
-            "tanggal": tanggal,
+            "tanggal_pengajuan": tanggal_pengajuan,
+            "tanggal_penerimaan": tanggal_penerimaan,
             "nama_barang": nama_barang,
             "jumlah": jumlah,
             "ruangan": ruangan,
@@ -52,17 +54,8 @@ def pengajuan_barang():
     ).inserted_id
 
     new_pengajuan = mongo.db.pengajuan_barang.find_one({"_id": pengajuan_id})
-
-    result = {
-        "_id": str(new_pengajuan["_id"]),
-        "role": new_pengajuan["role"],
-        "tanggal": new_pengajuan["tanggal"],
-        "nama_barang": new_pengajuan["nama_barang"],
-        "jumlah": new_pengajuan["jumlah"],
-        "ruangan": new_pengajuan["ruangan"],
-    }
-
-    return jsonify(result), 201
+    new_pengajuan["_id"] = str(new_pengajuan["_id"])  # Convert ObjectId to string
+    return jsonify(new_pengajuan), 201
 
 
 # PUT route to update a pengajuan item
@@ -78,6 +71,10 @@ def update_pengajuan_barang(pengajuan_id):
     # Check if jumlah is provided
     if "jumlah" in data:
         updated_fields["jumlah"] = data["jumlah"]
+
+    # Check if tanggal_penerimaan is provided
+    if "tanggal_penerimaan" in data:
+        updated_fields["tanggal_penerimaan"] = data["tanggal_penerimaan"]
 
     # If no fields to update are provided
     if not updated_fields:
@@ -132,19 +129,21 @@ def get_pengusulan_barang():
 def pengusulan_barang():
     data = request.get_json()
     role = data.get("role")
-    tanggal = data.get("tanggal")
+    tanggal_penerimaan = data.get("tanggal_penerimaan")
+    tanggal_pengusulan = data.get("tanggal_pengusulan")
     nama_barang = data.get("nama_barang")
     volume = data.get("volume")
     merek = data.get("merek")
     ruangan = data.get("ruangan")
 
-    if not all([role, tanggal, nama_barang, volume, merek]):
+    if not all([role, tanggal_pengusulan, nama_barang, volume, merek]):
         return jsonify({"message": "Missing required fields"}), 400
 
     pengusulan_id = mongo.db.pengusulan_barang.insert_one(
         {
             "role": role,
-            "tanggal": tanggal,
+            "tanggal_pengusulan": tanggal_pengusulan,
+            "tanggal_penerimaan": tanggal_penerimaan,
             "nama_barang": nama_barang,
             "volume": volume,
             "merek": merek,
@@ -153,18 +152,8 @@ def pengusulan_barang():
     ).inserted_id
 
     new_pengusulan = mongo.db.pengusulan_barang.find_one({"_id": pengusulan_id})
-
-    result = {
-        "_id": str(new_pengusulan["_id"]),
-        "role": new_pengusulan["role"],
-        "tanggal": new_pengusulan["tanggal"],
-        "nama_barang": new_pengusulan["nama_barang"],
-        "volume": new_pengusulan["volume"],
-        "merek": new_pengusulan["merek"],
-        "ruangan": new_pengusulan["ruangan"],
-    }
-
-    return jsonify(result), 201
+    new_pengusulan["_id"] = str(new_pengusulan["_id"])  # Convert ObjectId to string
+    return jsonify(new_pengusulan), 201
 
 
 # PUT route to update a pengusulan item
@@ -180,6 +169,10 @@ def update_pengusulan_barang(pengusulan_id):
     # Check if volume is provided
     if "volume" in data:
         updated_fields["volume"] = data["volume"]
+
+    # Check if volume is provided
+    if "tanggal_penerimaan" in data:
+        updated_fields["tanggal_penerimaan"] = data["tanggal_penerimaan"]
 
     # If no fields to update are provided
     if not updated_fields:
