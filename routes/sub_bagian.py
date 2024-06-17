@@ -28,6 +28,7 @@ def ajukan():
     nama_barang = pengusulan_barang.get("nama_barang")
     volume = pengusulan_barang.get("volume")
     merek = pengusulan_barang.get("merek")
+    ruangan = pengusulan_barang.get("ruangan")
 
     sub_bag_id = mongo.db.sub_bag.insert_one(
         {
@@ -37,6 +38,7 @@ def ajukan():
             "nama_barang": nama_barang,
             "volume": volume,
             "merek": merek,
+            "ruangan": ruangan,
             "jumlah_diterima": 0,  # Default value
             "is_verif": False,  # Set is_verif to False by default
         }
