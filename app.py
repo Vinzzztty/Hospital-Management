@@ -6,6 +6,7 @@ from routes.auth import auth_bp
 from routes.staffRuangan import staff_ruangan_bp
 from routes.sub_bagian import sub_bagian_bp
 from routes.kepala_bagian import kepala_bagian_bp
+from routes.verifikasi import verifikasi_bp
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "your_secret_key"
@@ -20,6 +21,7 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(staff_ruangan_bp)
 app.register_blueprint(sub_bagian_bp)
 app.register_blueprint(kepala_bagian_bp)
+app.register_blueprint(verifikasi_bp)
 
 
 @app.route("/")
