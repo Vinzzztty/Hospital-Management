@@ -22,11 +22,12 @@ def ajukan():
     ajukan_id = mongo.db.verifikasi.insert_one(
         {
             "id_kepala_bagian": id_kepala_bagian,
-            "tanggal_pengusulan": kepala_bagian["tanggal_pengusulan"],
+            "tanggal_pengusulan": kepala_bagian["tanggal_penerimaan"],
             "tanggal_penerimaan": None,
             "nama_barang": kepala_bagian["nama_barang"],
             "volume": kepala_bagian["volume"],
             "merek": kepala_bagian["merek"],
+            "ruangan": kepala_bagian["ruangan"],
             "jumlah_diterima": 0,
             "is_verif": False,
         }

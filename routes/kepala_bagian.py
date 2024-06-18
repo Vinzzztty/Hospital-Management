@@ -25,6 +25,7 @@ def ajukan():
             "nama_barang": sub_bag["nama_barang"],
             "volume": sub_bag["volume"],
             "merek": sub_bag["merek"],
+            "ruangan": sub_bag["ruangan"],
             "jumlah_diterima": 0,
             "is_verif": False,
         }
