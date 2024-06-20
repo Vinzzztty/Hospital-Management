@@ -27,9 +27,10 @@ def pengajuan_barang():
     role = data.get("role")
     nama_barang = data.get("nama_barang")
     tanggal_pengajuan = data.get("tanggal_pengajuan")
-    tanggal_penerimaan = data.get("tanggal_penerimaan")
+    tanggal_penerimaan = None
     jumlah = data.get("jumlah")
     ruangan = data.get("ruangan")
+    is_verif = False
 
     if not all([role, tanggal_pengajuan, nama_barang, jumlah, ruangan]):
         return jsonify({"message": "Missing required fields"}), 400
@@ -52,6 +53,7 @@ def pengajuan_barang():
             "nama_barang": nama_barang,
             "jumlah": jumlah,
             "ruangan": ruangan,
+            "is_verif": is_verif,
         }
     ).inserted_id
 
