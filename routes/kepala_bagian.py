@@ -2,7 +2,9 @@ from flask import Blueprint, request, jsonify
 from bson.objectid import ObjectId
 from models import mongo
 
-kepala_bagian_bp = Blueprint("kepala_bagian", __name__, url_prefix="/kepala_bagian")
+kepala_bagian_bp = Blueprint(
+    "api/kepala_bagian", __name__, url_prefix="/api/kepala_bagian"
+)
 
 
 @kepala_bagian_bp.route("/ajukan", methods=["POST"])

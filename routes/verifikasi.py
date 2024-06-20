@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from bson.objectid import ObjectId
 from models import mongo
 
-verifikasi_bp = Blueprint("verifikasi", __name__, url_prefix="/verifikasi")
+verifikasi_bp = Blueprint("api/verifikasi", __name__, url_prefix="/api/verifikasi")
 
 
 @verifikasi_bp.route("/ajukan", methods=["POST"])

@@ -3,13 +3,9 @@ from bson.objectid import ObjectId
 from models import mongo
 from pymongo.errors import PyMongoError
 
-transaksi_bp = Blueprint("transaksi", __name__, url_prefix="/transaksi")
+transaksi_bp = Blueprint("api/transaksi", __name__, url_prefix="/api/transaksi")
 
-from flask import Blueprint, jsonify, request
-from bson.objectid import ObjectId
-from models import mongo
-
-transaksi_bp = Blueprint("transaksi", __name__, url_prefix="/transaksi")
+# transaksi_bp = Blueprint("transaksi", __name__, url_prefix="/transaksi")
 
 
 # @transaksi_bp.route("/", methods=["POST"])

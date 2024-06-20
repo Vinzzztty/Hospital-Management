@@ -2,7 +2,9 @@ from flask import Blueprint, request, jsonify
 from bson.objectid import ObjectId
 from models import mongo
 
-staff_ruangan_bp = Blueprint("staff_ruangan", __name__, url_prefix="/staff_ruangan")
+staff_ruangan_bp = Blueprint(
+    "api/staff_ruangan", __name__, url_prefix="/api/staff_ruangan"
+)
 
 ALLOWED_BARANG = ["Tisu", "HVS", "Sabun", "Hand Sanitizer"]
 

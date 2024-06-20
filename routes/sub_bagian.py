@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from bson import ObjectId
 from models import mongo
 
-sub_bagian_bp = Blueprint("sub_bagian", __name__, url_prefix="/sub_bagian")
+sub_bagian_bp = Blueprint("api/sub_bagian", __name__, url_prefix="/api/sub_bagian")
 
 
 # POST route to create a new sub_bag item (ajukan)
