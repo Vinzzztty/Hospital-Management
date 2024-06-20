@@ -85,6 +85,40 @@ transaksi_bp = Blueprint("api/transaksi", __name__, url_prefix="/api/transaksi")
 #         return jsonify({"error": error_message}), 500
 
 
+# @transaksi_bp.route("/", methods=["GET"])
+# def get_all_transaksi():
+#     all_transaksi = {
+#         "sub_bag_transaksi": [],
+#         "kepala_bagian_transaksi": [],
+#         "verifikasi_transaksi": [],
+#     }
+
+#     try:
+#         # Fetch data from MongoDB collections for each role
+#         sub_bag_transaksi = list(mongo.db.sub_bag.find())
+#         kepala_bagian_transaksi = list(mongo.db.kepala_bagian.find())
+#         verifikasi_transaksi = list(mongo.db.verifikasi.find())
+
+#         # Convert ObjectId to string for JSON serialization
+#         for item in sub_bag_transaksi:
+#             item["_id"] = str(item["_id"])
+#         for item in kepala_bagian_transaksi:
+#             item["_id"] = str(item["_id"])
+#         for item in verifikasi_transaksi:
+#             item["_id"] = str(item["_id"])
+
+#         # Add fetched data to the response dictionary
+#         all_transaksi["sub_bag_transaksi"] = sub_bag_transaksi
+#         all_transaksi["kepala_bagian_transaksi"] = kepala_bagian_transaksi
+#         all_transaksi["verifikasi_transaksi"] = verifikasi_transaksi
+
+#         return jsonify(all_transaksi), 200
+
+#     except PyMongoError as e:
+#         error_message = f"MongoDB error: {str(e)}"
+#         return jsonify({"error": error_message}), 500
+
+
 @transaksi_bp.route("/", methods=["GET"])
 def get_all_transaksi():
     all_transaksi = {
@@ -99,13 +133,20 @@ def get_all_transaksi():
         kepala_bagian_transaksi = list(mongo.db.kepala_bagian.find())
         verifikasi_transaksi = list(mongo.db.verifikasi.find())
 
-        # Convert ObjectId to string for JSON serialization
+        # Add status to each transaction
         for item in sub_bag_transaksi:
             item["_id"] = str(item["_id"])
+            item["status"] = (
+                "On Process" if not item.get("is_verif", False) else "Pending"
+            )
+
         for item in kepala_bagian_transaksi:
             item["_id"] = str(item["_id"])
+            item["status"] = "Decline" if not item.get("is_verif", False) else "Pending"
+
         for item in verifikasi_transaksi:
             item["_id"] = str(item["_id"])
+            item["status"] = "Success" if item.get("is_verif", False) else "Decline"
 
         # Add fetched data to the response dictionary
         all_transaksi["sub_bag_transaksi"] = sub_bag_transaksi
